@@ -1,4 +1,4 @@
-name: Build MagCharge APK
+name: Build MagCharge Release AAB
 
 on:
   workflow_dispatch:
@@ -25,19 +25,35 @@ jobs:
         with:
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
 
-      - name: Verify Android SDK
+      - name: Restore release keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.MAGCHARGE_KEYSTORE_BASE64 }}
         run: |
-          sdkmanager --version
-          sdkmanager --list_installed
+          echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/magcharge-release.jks"
+          test -s "$RUNNER_TEMP/magcharge-release.jks"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build MagCharge debug APK
-        run: gradle --no-daemon :app:assembleDebug
+      - name: Build signed release AAB
+        env:
+          MAGCHARGE_STORE_PASSWORD: ${{ secrets.MAGCHARGE_STORE_PASSWORD }}
+          MAGCHARGE_KEY_PASSWORD: ${{ secrets.MAGCHARGE_KEY_PASSWORD }}
+        run: |
+          gradle --no-daemon :app:bundleRelease \
+            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/magcharge-release.jks" \
+            -Pandroid.injected.signing.store.password="$MAGCHARGE_STORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="magcharge" \
+            -Pandroid.injected.signing.key.password="$MAGCHARGE_KEY_PASSWORD"
 
-      - name: Upload MagCharge APK
+      - name: Verify AAB
+        run: |
+          ls -lh app/build/outputs/bundle/release/
+          test -s app/build/outputs/bundle/release/app-release.aab
+
+      - name: Upload MagCharge Release AAB
         uses: actions/upload-artifact@v4
         with:
-          name: MagCharge-V3-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: MagCharge-release-AAB
+          path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
