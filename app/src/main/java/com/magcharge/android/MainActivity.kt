@@ -43,13 +43,14 @@ class MagViewModel : ViewModel() {
 
     fun updateBattery(intent: Intent?) {
         if (intent == null) return
+        val context = getApplicationContext()
         val level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, 0)
         val scale = intent.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, 100).coerceAtLeast(1)
         val status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, 0)
         val plugged = intent.getIntExtra(android.os.BatteryManager.EXTRA_PLUGGED, 0)
         val t = intent.getIntExtra(android.os.BatteryManager.EXTRA_TEMPERATURE, Int.MIN_VALUE)
         val v = intent.getIntExtra(android.os.BatteryManager.EXTRA_VOLTAGE, 0)
-        val batteryManager = getSystemService(Context.BATTERY_SERVICE) as? android.os.BatteryManager
+        val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as? android.os.BatteryManager
         val c = batteryManager?.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
             ?: Int.MIN_VALUE
         battery = BatteryUi(
