@@ -41,9 +41,8 @@ class MagViewModel : ViewModel() {
     private var scanCallback: ScanCallback? = null
     private var gatt: android.bluetooth.BluetoothGatt? = null
 
-    fun updateBattery(intent: Intent?) {
+    fun updateBattery(context: Context, intent: Intent?) {
         if (intent == null) return
-        val context = getApplicationContext()
         val level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, 0)
         val scale = intent.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, 100).coerceAtLeast(1)
         val status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, 0)
@@ -118,9 +117,9 @@ class MainActivity : ComponentActivity() {
         val initial = registerReceiver(null, batteryFilter)
         setContent {
             val vm: MagViewModel = viewModel()
-            LaunchedEffect(Unit) { vm.updateBattery(initial) }
+            LaunchedEffect(Unit) { vm.updateBattery(context, initial) }
             DisposableEffect(Unit) {
-                val r = object : BroadcastReceiver() { override fun onReceive(c: Context?, i: Intent?) { vm.updateBattery(i) } }
+                val r = object : BroadcastReceiver() { override fun onReceive(c: Context?, i: Intent?) { vm.updateBattery(context, i) } }
                 registerReceiver(r, batteryFilter)
                 onDispose { unregisterReceiver(r) }
             }
