@@ -116,6 +116,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val initial = registerReceiver(null, batteryFilter)
         setContent {
+            val context = this@MainActivity
             val vm: MagViewModel = viewModel()
             LaunchedEffect(Unit) { vm.updateBattery(context, initial) }
             DisposableEffect(Unit) {
