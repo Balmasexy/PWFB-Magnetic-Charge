@@ -1,4 +1,4 @@
-name: Build MagCharge Release AAB
+name: Build MagCharge Release AAB and APK
 
 on:
   workflow_dispatch:
@@ -46,14 +46,34 @@ jobs:
             -Pandroid.injected.signing.key.alias="magcharge" \
             -Pandroid.injected.signing.key.password="$MAGCHARGE_KEY_PASSWORD"
 
-      - name: Verify AAB
+      - name: Build signed release APK
+        env:
+          MAGCHARGE_STORE_PASSWORD: ${{ secrets.MAGCHARGE_STORE_PASSWORD }}
+          MAGCHARGE_KEY_PASSWORD: ${{ secrets.MAGCHARGE_KEY_PASSWORD }}
+        run: |
+          gradle --no-daemon :app:assembleRelease \
+            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/magcharge-release.jks" \
+            -Pandroid.injected.signing.store.password="$MAGCHARGE_STORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="magcharge" \
+            -Pandroid.injected.signing.key.password="$MAGCHARGE_KEY_PASSWORD"
+
+      - name: Verify release outputs
         run: |
           ls -lh app/build/outputs/bundle/release/
+          ls -lh app/build/outputs/apk/release/
           test -s app/build/outputs/bundle/release/app-release.aab
+          test -s app/build/outputs/apk/release/app-release.apk
 
       - name: Upload MagCharge Release AAB
         uses: actions/upload-artifact@v4
         with:
           name: MagCharge-release-AAB
           path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+      - name: Upload MagCharge Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MagCharge-release-APK
+          path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
