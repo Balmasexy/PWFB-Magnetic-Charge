@@ -2,20 +2,20 @@
 
 ## Source
 
-Texas Instruments BQ51013C Evaluation Module User's Guide.
+Texas Instruments BQ51013C datasheet:
 
-Document:
-SLUUD57A
+- Document: SLUSFU9A
+- Original publication: October 2024
+- Revised: May 2025
+- Device: BQ51013C
+- Package: VQFN20 / RHL
 
-Revision:
-A
+These values are based on the current TI BQ51013C documentation and are
+reference starting points for the MagCharge Universal Receiver V1.
 
-Revision date:
-May 2025
+They do not constitute production validation or WPC certification.
 
-The values below are taken from the TI BQ51013CEVM schematic and BOM.
-
-These are reference-design values, not a claim that the final MagCharge PCB is already validated.
+---
 
 ## Receiver IC
 
@@ -28,17 +28,16 @@ Manufacturer:
 Texas Instruments
 
 Package:
-VQFN20
+VQFN20 / RHL
+
+---
 
 ## Receiver Coil
 
-L1
+Selected MagCharge candidate:
 
-Part:
-760308103215
-
-Manufacturer:
-Würth Electronics
+L1:
+Würth Electronics 760308103215
 
 Nominal inductance:
 14.3 uH
@@ -46,240 +45,369 @@ Nominal inductance:
 Dimensions:
 48 mm x 32 mm
 
-Maximum resistance:
-190 mOhm
+TI listed output-current range:
+50 mA - 1000 mA
 
 The final MagCharge mechanical stack must be characterized again.
 
-## Resonant Capacitors
+Required measurements:
+
+- Ls' with the WPC test fixture
+- Ls in free space
+- Coil DC resistance
+- Quality factor Q
+
+The WPC/TI guidance requires Q > 77.
+
+Do not use the TI example resonant values from the 11-uH reference coil
+as final MagCharge values.
+
+---
+
+## Resonant Network
 
 C1:
-68 nF
-50 V
-X7R
+Series resonant capacitor
+
+Status:
+TBD after Ls' measurement
 
 C2:
-68 nF
-50 V
-X7R
+Parallel resonant capacitor
 
-C3:
-47 nF
-50 V
-X7R
+Status:
+TBD after Ls measurement
+
+Minimum voltage rating:
+25 V
+
+Calculation order:
+
+1. Measure Ls' using the WPC receiver test fixture.
+2. Calculate C1 from Ls'.
+3. Measure free-space Ls.
+4. Calculate C2 using the selected C1 and Ls.
+5. Verify resonance and efficiency on the final mechanical stack.
+
+TI's published example uses an 11-uH coil and therefore its example values
+must not be copied directly to the MagCharge 14.3-uH coil.
+
+---
 
 ## Communication Network
 
-C8:
-22 nF
-50 V
-X7R
+COMM1:
+22 nF starting value
 
-C13:
-22 nF
-50 V
-X7R
+COMM2:
+22 nF starting value
+
+Minimum voltage rating:
+25 V
+
+A 47-nF value may be evaluated only if communication robustness testing of
+the final design requires it.
+
+Larger COMM capacitance can strengthen communication but can reduce
+efficiency.
+
+---
 
 ## Clamp Network
 
-C9:
-470 nF
-25 V
-X7R
+CLAMP1:
+0.47 uF starting value
 
-C12:
-470 nF
+CLAMP2:
+0.47 uF starting value
+
+Minimum voltage rating:
 25 V
-X7R
+
+These capacitors support the receiver overvoltage clamping function.
+
+---
 
 ## Boot Network
 
-C10:
-10 nF
-50 V
-X7R
+BOOT1:
+10 nF starting value
 
-C11:
-10 nF
-50 V
-X7R
+BOOT2:
+10 nF starting value
 
-## Additional Receiver Network
+Minimum voltage rating:
+25 V
 
-C4:
-1.8 nF
-50 V
-C0G/NP0
+---
 
-C5:
-100 pF
-100 V
-C0G/NP0
+## RECT Capacitance
 
-## Output Capacitors
+For the TI 1-A IMAX reference:
 
-C14:
-10 uF
-35 V
-X7R
+RECT:
+2 x 10 uF + 0.1 uF
 
-C15:
-10 uF
-35 V
-X7R
+Minimum voltage rating:
+16 V
 
-## Additional Decoupling
+The exact capacitor population and PCB designators must follow the final
+MagCharge schematic.
 
-C6:
-100 nF
-50 V
-X7R
+---
 
-C7:
-1 uF
-50 V
-X7R
+## OUT Capacitance
 
-C16:
-100 nF
-50 V
-X7R
+For the TI reference:
 
-C17:
-1 uF
-50 V
-X7R
+OUT:
+10 uF + 0.1 uF
 
-C18:
-100 nF
-50 V
-X7R
+The exact capacitor population and PCB designators must follow the final
+MagCharge schematic.
 
-C19:
-100 nF
-50 V
-X7R
+---
 
-C20:
-1 uF
-50 V
-X7R
+## FOD and Current Limit
 
-## FOD
+ROS:
+20 kOhm starting/reference value
 
-R17:
-42.2 kOhm
-1%
-0603
+RFOD:
+196 Ohm starting/reference value
 
-## ILIM
+R1:
+66 Ohm starting/reference value
 
-R4:
-110 Ohm
-1%
-0603
+Total RILIM:
+262 Ohm
 
-The EVM also provides an adjustable current-limit option using a 5 kOhm trimmer.
+Relationship:
 
-For the first MagCharge prototype, start with the fixed reference configuration and validate the actual current limit.
+RILIM = R1 + RFOD
+
+For IMAX = 1 A, TI's reference design uses:
+
+RILIM = 262 Ohm
+
+This produces approximately a 1.2-A hardware current limit to allow
+temporary current surges.
+
+IMPORTANT:
+
+RFOD and ROS require final FOD calibration.
+
+The values above are starting/reference values and must not be represented
+as final production-calibrated values.
+
+Good PCB practice is to provide resistor population options for RFOD and ROS
+so calibrated values can be fitted without redesigning the board.
+
+---
 
 ## TS / Temperature
+
+TS/CTRL should use a properly characterized NTC in the production design.
+
+A 10-kOhm resistor may be used as a test/simulation termination during
+prototype evaluation.
 
 R11:
 10 kOhm
 
-The TI EVM uses a 10 kOhm resistor to simulate the NTC during evaluation.
+Status:
+Prototype/test only.
 
-For the MagCharge production prototype, replace the simulation resistor with an appropriately characterized NTC.
+The final receiver must validate temperature behavior of:
 
-## Other Reference Resistors
+- RX coil
+- BQ51013C
+- PCB
+- ferrite/shield
+- USB-C connector
+- surrounding mechanical assembly
 
-R1:
-10 kOhm
+---
 
-R2:
-200 Ohm
+## Wireless-Only Control Pins
 
-R7:
-1.50 kOhm
+AD:
+Tie to PGND for the wireless-only architecture.
 
-R10:
-499 Ohm
+AD_EN:
+Leave floating.
 
-R15:
-1.00 kOhm
+EN1:
+Low/floating during normal wireless operation.
 
-R17:
-42.2 kOhm
+EN2:
+Low/floating during normal wireless operation.
 
-The exact population of these resistors depends on the final MagCharge schematic and which EVM features are retained.
+The internal pulldowns allow normal wireless operation with EN1 and EN2 low.
 
-## EVM Protection / Auxiliary Components
+The final design may connect EN1/EN2 to a controller if system-level power
+control is required.
+
+---
+
+## CHG
+
+CHG is an open-drain charging-status output.
+
+An optional indicator LED may be connected according to the TI reference
+application.
+
+Example TI reference:
+2.1-V LED with 1.5-kOhm series resistor.
+
+Status:
+Optional.
+
+---
+
+## EVM-Only / Architecture-Dependent Components
+
+The following components from TI EVM configurations must not automatically
+be copied into the compact MagCharge Universal Receiver:
+
+- EVM-specific input multiplexing components
+- external PMOS circuitry
+- EVM protection/auxiliary circuitry
+- EVM-specific resistor networks
+- EVM-specific resonant capacitor populations
+- EVM-specific test components
+
+Examples previously documented include:
 
 D2:
-BZT52C5V1T-7
-5.1 V Zener
+BZT52C5V1T-7 5.1-V Zener
 
 Q1:
-SQ4949EY-T1_GE3
-P-channel MOSFET
+SQ4949EY-T1_GE3 P-channel MOSFET
 
-These belong to the TI EVM's auxiliary/external-input implementation.
+These may be required only if the final MagCharge architecture uses the
+corresponding wired-input or power-multiplexing function.
 
-They should not automatically be copied into the compact MagCharge receiver until the final USB-C architecture is defined.
+---
 
-## EVM Output
+## TI Reference Output
 
-TI EVM:
+Reference application:
 
-5 V
-Up to 1 A
-5 W BPP
+5 V output
 
-## EVM Test Conditions
+Maximum normal output current:
+1 A
 
-TI specifies:
+Reference power:
+5 W
 
-- 5 V transmitter supply
-- electronic/resistive load
-- 500 mA initial test
-- 10 Ohm load
-- output verification approximately 4.9 V to 5.1 V
-- rectified voltage approximately 5 V to 5.2 V under the documented test setup
+The MagCharge Universal Receiver V1 target remains:
 
-## Critical Engineering Rule
+5 V / 1 A maximum prototype output.
 
-The TI EVM values are the starting reference for MagCharge V1.
+Higher-power versions require a separate validated design.
 
-Before manufacturing the final receiver:
+---
 
-1. verify the selected coil
-2. measure the coil in the final mechanical stack
-3. verify resonant behavior
-4. verify FOD
-5. verify current limit
-6. verify thermal behavior
-7. verify USB-C output behavior
-8. verify alignment performance
+## PCB / Layout Requirements
 
-Do not assume the EVM automatically validates the MagCharge mechanical design.
+TI requires special attention to:
 
-## Certification
+- Very short AC1 and AC2 power paths
+- Resonant capacitors close to the receiver IC
+- COMM capacitors close to the receiver IC
+- CLAMP capacitors close to the receiver IC
+- BOOT capacitors close to the receiver IC
+- High-frequency bypass capacitors close to RECT and OUT
+- Minimal ILIM/FOD sensing loops
+- Quiet routing of sensing signals
+- Ground plane with appropriate vias
+- Thermal connection of the exposed pad to PGND
 
-Using the BQ51013C or copying the EVM reference values does not make MagCharge Qi-certified.
+For the 1-A reference application, TI lists approximately:
 
-The finished product must complete the applicable certification and regulatory process before commercial certification claims are made.
+AC1:
+1.2 A
 
-## Primary TI References
+AC2:
+1.2 A
 
-BQ51013C product:
-https://www.ti.com/product/BQ51013C
+OUT:
+1 A
 
-BQ51013CEVM:
-https://www.ti.com/tool/BQ51013CEVM
+RECT:
+100 mA RMS
 
-BQ51013C datasheet:
-https://www.ti.com/lit/ds/symlink/bq51013c.pdf
+COMM1/COMM2:
+300 mA
 
-BQ51013CEVM User's Guide:
-https://www.ti.com/lit/ug/sluud57/sluud57.pdf
+CLAMP1/CLAMP2:
+500 mA
+
+Other low-power signals:
+10 mA or less
+
+These are design-reference current ratings and must be reviewed against the
+final PCB geometry and thermal design.
+
+---
+
+## Receiver Coil Characterization Fixture
+
+TI/WPC reference conditions:
+
+Primary shield:
+50 mm x 50 mm x 1 mm ferrite
+
+Example ferrite:
+TDK PC44
+
+Fixture gap:
+3.4 mm
+
+Measurement:
+1 V RMS
+
+Measurement frequency:
+100 kHz
+
+Measure:
+
+Ls':
+Coil inductance with the specified fixture
+
+Ls:
+Free-space coil inductance
+
+The final MagCharge mechanical stack must be represented during the
+appropriate measurements.
+
+---
+
+## Production Validation Status
+
+Current status:
+
+NOT PRODUCTION VALIDATED
+
+Still required:
+
+- Resonant-network calculation
+- Coil characterization
+- FOD calibration
+- Current-limit validation
+- Thermal testing
+- USB-C output testing
+- Foreign-object testing
+- Alignment testing
+- Efficiency measurement
+- Load/transient testing
+- EMC/EMI evaluation
+- Safety review
+- WPC/Qi compliance assessment as applicable
+
+The Android application and BLE telemetry must never be treated as the
+primary safety mechanism.
+
+Hardware protection must remain functional without the Android application.

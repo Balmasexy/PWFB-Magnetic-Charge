@@ -59,9 +59,9 @@ Würth 760308103215:
 
 | Ref | Component | Value | Package | Status |
 |---|---|---:|---|---|
-| R17 | FOD resistor | 42.2 kΩ, 1% | 0603 | Verified TI EVM |
-| R4 | ILIM resistor | 110 Ω, 1% | 0603 | Verified TI EVM |
-| R11 | TS simulation resistor | 10 kΩ | 0603 | EVM test configuration |
+| R17 | FOD resistor (RFOD) | 196 Ω, 1% starting value | 0603 | TI May 2025 reference; final value requires FOD calibration |
+| R4 | ILIM resistor (R1) | 66 Ω, 1% starting value | 0603 | TI May 2025 reference; R1 + RFOD = 262 Ω |
+| R11 | TS simulation resistor | 10 kΩ | 0603 | Prototype/test only; production requires characterized NTC |
 
 ### Production note
 
