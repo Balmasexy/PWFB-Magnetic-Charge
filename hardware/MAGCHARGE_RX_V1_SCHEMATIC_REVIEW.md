@@ -26,20 +26,34 @@ No undocumented pin connection should be fabricated.
 
 ## 3. Component Verification
 
-Check every component against the verified BOM:
+Check every component against the current engineering BOM:
 
-- [ ] U1 BQ51013CRHLR
-- [ ] L1 RX coil
-- [ ] C1–C20
-- [ ] R1
-- [ ] R2
-- [ ] R4
-- [ ] R7
-- [ ] R10
-- [ ] R15
-- [ ] R17
-- [ ] D2
-- [ ] Q1
+- [ ] U1 — BQ51013CRHLR
+- [ ] L1 — Würth Elektronik 760308103215 RX coil
+- [ ] SH1 — ferrite shield
+- [ ] MR1 — magnetic alignment ring
+- [ ] C_RX1 — series resonant capacitor, TBD after Ls' measurement
+- [ ] C_RX2 — parallel resonant capacitor, TBD after Ls measurement
+- [ ] C_BOOT1
+- [ ] C_BOOT2
+- [ ] C_COMM1
+- [ ] C_COMM2
+- [ ] C_CLAMP1
+- [ ] C_CLAMP2
+- [ ] C_RECT1
+- [ ] C_RECT2
+- [ ] C_RECT3
+- [ ] C_OUT1
+- [ ] C_OUT2
+- [ ] R_ILIM
+- [ ] R_FOD
+- [ ] R_OS
+- [ ] NTC1
+- [ ] R_TS_TEST — prototype only
+- [ ] J1 — USB-C male/flex-tail output
+- [ ] ESD1
+- [ ] FUSE1
+- [ ] Required test points
 
 Verify:
 
