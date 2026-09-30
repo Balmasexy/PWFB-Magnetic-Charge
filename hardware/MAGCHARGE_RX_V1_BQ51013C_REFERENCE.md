@@ -101,13 +101,16 @@ The BQ51013C datasheet specifies the receiver resonant-network design around the
 
 For the final selected coil, calculate and verify:
 
-- C1 resonant capacitance
-- C2 communication/demodulation capacitance
+- C_RX1 series resonant capacitance (Cs)
+- C_RX2 parallel resonant capacitance (Cd)
 - operating frequency
 - coil Q
 - voltage rating
 
-C1 and C2 must use capacitors with at least 25 V rating.
+C_RX1 and C_RX2 must use capacitors with at least 25 V rating.
+
+C_RX1 and C_RX2 are part of the receiver resonant network and must
+not be confused with the separate COMM capacitors.
 
 Do not substitute arbitrary values without recalculating the network.
 
