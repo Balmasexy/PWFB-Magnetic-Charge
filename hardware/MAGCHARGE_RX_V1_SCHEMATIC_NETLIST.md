@@ -290,39 +290,70 @@ Final current-limit behavior requires board validation.
 
 ---
 
-## FOD
+## FOD / ILIM Calibration Network
 
 U1 pin 14:
 
 FOD = rectified-power measurement input.
 
-The FOD pin voltage is proportional to output current and is used by
-the BQ51013C to report received power to the Qi transmitter.
+The FOD network follows the TI Figure 9-1 reference topology.
 
-RFOD is part of the ILIM resistance path and participates in FOD
-calibration.
+FOD node:
+- U1 pin 14 (FOD)
+- R_OS output from RECT
+- R_FOD to PGND
+- R1 connection from ILIM
 
-RFOD starting/reference:
+### R_OS
+
+R_OS:
+RECT -> R_OS -> FOD node
+
+Starting/reference:
+20 kohm
+
+R_OS is a separate FOD calibration resistor and is NOT part of RILIM.
+
+### R_FOD
+
+R_FOD:
+FOD node -> R_FOD -> PGND
+
+Starting/reference:
 196 ohm
 
-Final RFOD value requires FOD calibration.
+R_FOD participates in both FOD calibration and the ILIM resistance path.
 
+### R1
 
-### ROS
+R1:
+ILIM -> R1 -> FOD node
 
-ROS is a separate FOD calibration resistor shown in TI Figure 9-1.
+Starting/reference:
+66 ohm
 
-Starting/reference value:
+### ILIM Resistance
 
-ROS = 20 kohm
+The total resistance seen from ILIM to PGND is:
 
-ROS and RFOD are both subject to final FOD calibration.
+RILIM = R1 + R_FOD
 
-TI recommends providing two resistor positions for ROS and two resistor
-positions for RFOD so that the final calibrated values can be fitted
-after receiver characterization.
+Starting/reference:
 
-Do not treat ROS as part of RILIM.
+RILIM = 66 ohm + 196 ohm = 262 ohm
+
+Reference IMAX:
+1 A
+
+This produces a nominal 1.2-A hardware current limit according to the
+TI reference application, allowing temporary current surges.
+
+Final R_OS, R_FOD and R1 values require receiver characterization and
+FOD calibration.
+
+TI recommends providing two resistor positions for R_OS and two
+positions for R_FOD so that precise values can be fitted after
+calibration.
 
 ## TS / CTRL
 
@@ -347,10 +378,22 @@ AD-EN:
 U1 pin 8 -> floating
 
 EN1:
-U1 pin 10 -> low/floating
+U1 pin 10 -> LOW / floating
 
 EN2:
-U1 pin 11 -> low/floating
+U1 pin 11 -> LOW / floating
+
+Wireless-only V1 control state:
+EN1 = LOW
+EN2 = LOW
+
+The BQ51013C has internal pulldown resistors on EN1 and EN2.
+For the wireless-only V1 receiver, no external controller is required
+for the normal enabled state. EN1 and EN2 may therefore remain LOW
+through their internal pulldowns or be driven LOW by the system
+controller in a future controlled implementation.
+
+With EN1 = EN2 = LOW, wireless power is enabled.
 
 ---
 
