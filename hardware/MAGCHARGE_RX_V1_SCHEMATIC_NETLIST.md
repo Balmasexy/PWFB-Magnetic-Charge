@@ -98,10 +98,77 @@ TBD after Ls measurement
 Voltage:
 25 V minimum
 
-Final resonance must be calculated and verified using the actual
-MagCharge coil and mechanical stack.
+### TI / WPC Resonance Characterization Procedure
 
----
+C1 and C2 form the dual-resonant circuit with the receiver coil.
+
+The final values must be calculated using the actual MagCharge receiver
+coil and the final mechanical stack.
+
+Measure the receiver coil with the final intended construction.
+
+For Ls' measurement, use the WPC v1.3 receiver coil test fixture:
+
+- Primary shield: 50 mm x 50 mm x 1 mm TDK PC44 ferrite
+- Test fixture gap dZ: 3.4 mm
+- Receiver coil installed as it will be used in the final product
+- Include relevant back cover, battery, spacer, shielding and other
+  mechanical materials that affect the magnetic stack
+- Measure at 1 V RMS and 100 kHz
+- Record this value as Ls'
+
+Repeat the measurement without the WPC test fixture to obtain the
+free-space inductance Ls.
+
+Calculate C1 first:
+
+C1 = 1 / ((2*pi*fS)^2 * Ls')
+
+where:
+
+fS = 100 kHz (+5% / -10%)
+
+Then calculate C2:
+
+C2 = 1 / ((2*pi*fD)^2 * Ls - 1/C1)
+
+where:
+
+fD = 1 MHz (+/-10%)
+
+C1 must be selected before calculating C2.
+
+### Coil Quality Factor
+
+Verify:
+
+Q > 77
+
+Q = (2*pi*fD*Ls) / R
+
+where R is the DC resistance of the receiver coil.
+
+### MagCharge V1 Coil
+
+Selected starting coil:
+
+Wurth Electronics 760308103215
+
+Nominal free-space inductance:
+14.3 uH
+
+Dimensions:
+48 mm x 32 mm
+
+This 14.3-uH nominal value is NOT sufficient by itself to finalize C1
+and C2. The actual Ls' and Ls measurements must be performed with the
+final magnetic/mechanical stack.
+
+The TI 11-uH example values of approximately 154 nF for C1 and 2.3 nF
+for C2 must not be copied directly into MagCharge V1.
+
+Final C1/C2 values require measured coil data, calculation, receiver
+testing and WPC v1.3 validation.
 
 ## BOOT Network
 
