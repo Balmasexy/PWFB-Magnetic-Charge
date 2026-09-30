@@ -1,0 +1,25 @@
+Reference	Value	Type	Connections	Notes
+U1	BQ51013CRHLR	IC	1:PGND;2:AC1;3:BOOT1;4:+5V_RX;5:CLAMP1;6:COMM1;7:CHG_STATUS;8:NC;9:PGND;10:EN1;11:EN2;12:ILIM;13:TS_CTRL;14:FOD;15:COMM2;16:CLAMP2;17:BOOT2;18:RECT;19:AC2;20:PGND;EP:PGND
+L1	760308103215	Coil	AC1;AC2	14.3uH nominal; final characterization required
+C_RX1	TBD	Capacitor	AC1/AC2 resonant path	Series Cs; >=25V
+C_RX2	TBD	Capacitor	AC1/AC2 resonant path	Parallel Cd; >=25V
+C_BOOT1	10nF	Capacitor	BOOT1-AC1	>=25V
+C_BOOT2	10nF	Capacitor	BOOT2-AC2	>=25V
+C_COMM1	22nF	Capacitor	COMM1-AC1	>=25V
+C_COMM2	22nF	Capacitor	COMM2-AC2	>=25V
+C_CLAMP1	0.47uF	Capacitor	CLAMP1-AC1	>=25V
+C_CLAMP2	0.47uF	Capacitor	CLAMP2-AC2	>=25V
+C_RECT1	10uF	Capacitor	RECT-PGND	>=16V
+C_RECT2	10uF	Capacitor	RECT-PGND	>=16V
+C_RECT3	0.1uF	Capacitor	RECT-PGND	>=16V
+C_OUT1	10uF	Capacitor	+5V_RX-PGND	5V output filtering
+C_OUT2	0.1uF	Capacitor	+5V_RX-PGND	5V output filtering
+R_OS	20k	Resistor	RECT-FOD	Starting value; calibration required
+R1	66R	Resistor	ILIM-FOD	Starting value
+R_FOD	196R	Resistor	FOD-PGND	Starting value; calibration required
+NTC1	TBD	NTC	TS_CTRL-PGND	Production value TBD
+J1	USB-C	Connector	+5V_RX/PGND	Male/flex-tail; source role; no PD
+ESD1	TBD	ESD	USB-C output	Selection TBD
+FUSE1	TBD	Fuse/current protection	USB-C VBUS	Selection TBD
+SH1	TBD	Ferrite shield	Mechanical	Final stack validation required
+MR1	TBD	Magnetic ring	Mechanical	Final alignment validation required
