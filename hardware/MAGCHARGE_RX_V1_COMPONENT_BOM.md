@@ -1,661 +1,147 @@
-# MagCharge Universal Receiver V1 - Component BOM
+# MagCharge Universal Receiver V1 — Component BOM
 
-## Design Target
+## Status
 
-Product:
-MagCharge Universal Receiver V1
+Engineering reference BOM for the MagCharge Universal Receiver V1 prototype.
 
-Architecture:
-Qi 1.3 / 5W BPP receiver
+This BOM uses the verified component values from the TI BQ51013C evaluation-module reference design where applicable.
 
-Target output:
-5V nominal
-Up to 1A
-Approximately 5W
-
-Primary receiver IC:
-Texas Instruments BQ51013C
-
-Prototype status:
-Engineering prototype - not certified
+**Important:** These are reference-design values, not a final production BOM. The receiver coil, resonant network, FOD network, thermal behavior, magnetic stack, and mechanical construction must be re-characterized for the final MagCharge product.
 
 ---
 
-## 1. Wireless Receiver IC
+## 1. Wireless Power Receiver
 
-Reference:
-U1
+| Ref | Component | Value / Part | Package | Qty | Status |
+|---|---|---|---|---:|---|
+| U1 | Wireless power receiver IC | TI BQ51013CRHLR | VQFN-20 | 1 | Verified TI reference |
+| L1 | Qi receiver coil | Würth 760308103215 | 48 × 32 mm | 1 | Verified TI EVM |
+| C1 | Resonant capacitor | 68 nF, 50 V, X7R | 0603 | 1 | Verified TI EVM |
+| C2 | Resonant capacitor | 68 nF, 50 V, X7R | 0603 | 1 | Verified TI EVM |
+| C3 | Resonant capacitor | 47 nF, 50 V, X7R | 0603 | 1 | Verified TI EVM |
+| C4 | Resonant capacitor | 1.8 nF, 50 V, C0G/NP0 | 0603 | 1 | Verified TI EVM |
+| C5 | Resonant capacitor | 100 pF, 100 V, C0G/NP0 | 0603 | 1 | Verified TI EVM |
 
-Part:
-TI BQ51013C
+### Coil reference
 
-Package:
-VQFN-20
-4.5 mm x 3.5 mm
+Würth 760308103215:
 
-Quantity:
-1
-
-Function:
-
-- Qi receiver
-- synchronous rectification
-- regulation
-- Qi communication
-- FOD
-- current sensing
-- thermal protection
-
-Source:
-Texas Instruments
+- Approximate size: 48 × 32 mm
+- Inductance: 14.3 µH
+- Maximum resistance: 190 mΩ
+- Must be re-characterized with the final ferrite, magnetic ring, adhesive, case/phone spacing and PCB stack.
 
 ---
 
-## 2. Receiver Coil
+## 2. Receiver IC Support Capacitors
 
-Reference:
-L1
+| Ref | Component | Value | Rating / Dielectric | Qty |
+|---|---|---:|---|---:|
+| C6 | Ceramic capacitor | 100 nF | 50 V X7R | 1 |
+| C7 | Ceramic capacitor | 1 µF | 50 V X7R | 1 |
+| C8 | Ceramic capacitor | 22 nF | 50 V X7R | 1 |
+| C9 | Ceramic capacitor | 470 nF | 25 V X7R | 1 |
+| C10 | Ceramic capacitor | 10 nF | 50 V X7R | 1 |
+| C11 | Ceramic capacitor | 10 nF | 50 V X7R | 1 |
+| C12 | Ceramic capacitor | 470 nF | 25 V X7R | 1 |
+| C13 | Ceramic capacitor | 22 nF | 50 V X7R | 1 |
+| C14 | Ceramic capacitor | 10 µF | 35 V X7R | 1 |
+| C15 | Ceramic capacitor | 10 µF | 35 V X7R | 1 |
+| C16 | Ceramic capacitor | 100 nF | 50 V X7R | 1 |
+| C17 | Ceramic capacitor | 1 µF | 50 V X7R | 1 |
+| C18 | Ceramic capacitor | 100 nF | 50 V X7R | 1 |
+| C19 | Ceramic capacitor | 100 nF | 50 V X7R | 1 |
+| C20 | Ceramic capacitor | 1 µF | 50 V X7R | 1 |
 
-Preferred initial candidate:
+---
 
-Manufacturer:
-Würth Elektronik
+## 3. FOD and Current-Limit Components
 
-Part:
-760308103215
+| Ref | Component | Value | Package | Status |
+|---|---|---:|---|---|
+| R17 | FOD resistor | 42.2 kΩ, 1% | 0603 | Verified TI EVM |
+| R4 | ILIM resistor | 110 Ω, 1% | 0603 | Verified TI EVM |
+| R11 | TS simulation resistor | 10 kΩ | 0603 | EVM test configuration |
 
-Nominal dimensions:
-48 mm x 32 mm
+### Production note
 
-Nominal inductance:
-14.3 uH
+R11 must not automatically be copied into production.
 
-Target current range:
-50 mA - 1A
+The final product should use a properly characterized temperature-sensing element/NTC and validate the complete thermal response of:
 
-Quantity:
-1
-
-Alternative:
-
-Manufacturer:
-XFMRS
-
-Part:
-XFMCC483201-143
-
-Dimensions:
-48 mm x 32 mm
-
-Nominal inductance:
-14.3 uH
-
-Alternative:
-
-Manufacturer:
-TDK
-
-Part:
-WR483265-15F5-G
-
-Dimensions:
-48 mm x 32 mm
-
-Nominal inductance:
-approximately 13.3 uH
-
-Important:
-
-The final coil must be electrically characterized in the actual MagCharge mechanical stack.
-
-The measured inductance may change because of:
-
+- RX coil
+- receiver IC
+- PCB
 - ferrite
 - magnetic ring
-- phone case
-- phone/battery
-- adhesive
-- mechanical spacing
+- USB-C connector
+- attached phone/case
 
-Do not fabricate the final production PCB using catalog inductance alone.
+The FOD network must also be re-validated with the final coil and mechanical stack.
 
 ---
 
-## 3. Ferrite Layer
+## 4. Additional Resistors
 
-Reference:
-F1
-
-Type:
-Flexible magnetic shielding ferrite
-
-Target:
-Approximately 48 mm x 32 mm class
-
-Quantity:
-1
-
-Requirements:
-
-- suitable for wireless-power receiver applications
-- compatible with the selected coil
-- thin construction
-- suitable temperature rating
-- mechanically compatible with adhesive/lamination
-
-Final ferrite thickness must be selected during coil validation.
+| Ref | Component | Value | Tolerance | Package | Status |
+|---|---|---:|---:|---|---|
+| R1 | Resistor | 10 kΩ | 1% | 0603 | Verified TI EVM |
+| R2 | Resistor | 200 Ω | 1% | 0603 | Verified TI EVM |
+| R7 | Resistor | 1.50 kΩ | 1% | 0603 | Verified TI EVM |
+| R10 | Resistor | 499 Ω | 1% | 0603 | Verified TI EVM |
+| R15 | Resistor | 1.00 kΩ | 1% | 0603 | Verified TI EVM |
 
 ---
 
-## 4. Resonant Capacitors
+## 5. Protection Components
 
-References:
-C1 / C2
+| Ref | Component | Part | Function | Status |
+|---|---|---|---|---|
+| D2 | Zener diode | BZT52C5V1T-7 | 5.1 V protection | Verified TI EVM |
+| Q1 | P-channel MOSFET | SQ4949EY-T1_GE3 | Output/protection switching | Verified TI EVM |
 
-Type:
-High-quality ceramic capacitors
-
-Minimum voltage rating:
-25V
-
-Dielectric:
-X7R preferred
-
-Initial value:
-
-C1:
-To be calculated/verified from the selected coil and TI reference design.
-
-C2:
-To be calculated/verified from the selected coil and TI reference design.
-
-Do not substitute arbitrary values.
-
-The BQ51013C datasheet requires the resonant network to be designed around the selected receiver coil.
+Additional protection may be required after prototype testing depending on the final USB-C implementation.
 
 ---
 
-## 5. BOOT Capacitors
+## 6. USB-C Output
 
-References:
-C_BOOT1
-C_BOOT2
+### V1 target
 
-Initial value:
-10 nF
+- Output voltage: 5 V nominal
+- Target current: up to 1 A
+- Target power: approximately 5 W
+- USB-C connector: male plug / short flex-tail implementation
+- USB-C role: source
+- Correct CC source resistors required
+- No USB-PD negotiation in V1
+- Reverse-current protection required
+- Short-circuit protection required
+- ESD protection required
 
-Voltage rating:
-Minimum 25V
-
-Dielectric:
-X7R preferred
-
-Package:
-0402 or 0603 subject to assembly capability
-
-Quantity:
-2
-
-Purpose:
-
-Support the internal synchronous-rectifier operation.
-
-Place close to the corresponding BQ51013C pins.
+The exact USB-C connector and CC implementation should be selected after the mechanical prototype dimensions are frozen.
 
 ---
 
-## 6. CLAMP Capacitors
+## 7. Thermal Sensor
 
-References:
-C_CLAMP1
-C_CLAMP2
+### Prototype
 
-Initial value:
-0.47 uF
+Use the TI EVM's 10 kΩ TS simulation arrangement only for bench validation where appropriate.
 
-Voltage rating:
-Minimum 25V
+### Production
 
-Dielectric:
-X7R preferred
+Use a characterized NTC positioned to monitor the thermally critical area.
 
-Package:
-0603 preferred
+Candidate location:
 
-Quantity:
-2
-
-Purpose:
-
-Support receiver-side over-voltage clamp operation.
-
-Place close to the corresponding BQ51013C pins.
-
----
-
-## 7. COMM Capacitor
-
-Reference:
-C_COMM
-
-Initial value:
-22 nF
-
-Voltage rating:
-Minimum 25V
-
-Dielectric:
-X7R preferred
-
-Quantity:
-1
-
-Purpose:
-
-Wireless communication network.
-
-A higher value may be evaluated only according to the TI reference design and communication testing.
-
----
-
-## 8. Output Capacitors
-
-References:
-C_OUT1
-C_OUT2
-
-Initial prototype selection:
-
-Type:
-Ceramic X7R
-
-Voltage rating:
-Minimum 10V
-
-Target capacitance:
-Use the value specified by the selected TI reference schematic/EVM.
-
-Quantity:
-2
-
-Important:
-
-Do not finalize the exact value until the current EVM schematic revision is checked against the PCB implementation.
-
----
-
-## 9. NTC Temperature Sensor
-
-Reference:
-NTC1
-
-Initial prototype:
-
-10 kOhm NTC
-
-Purpose:
-
-Monitor receiver temperature through the BQ51013C TS/CTRL function.
-
-Quantity:
-1
-
-Placement:
-
-Position thermally close to the receiver/coil hot region according to the final mechanical design.
-
-The EVM documentation uses a 10 kOhm temperature-simulation resistor during evaluation; the production prototype should use an appropriate thermistor implementation.
-
----
-
-## 10. Output Current-Limit Network
-
-Reference:
-R_ILIM
-
-Purpose:
-
-Set or limit receiver output current according to the BQ51013C design.
-
-Value:
-To be selected from the TI reference design for the desired V1 current limit.
-
-Target:
-
-Approximately 1A maximum prototype output.
-
-Do not select the resistor by guesswork.
-
----
-
-## 11. USB-C Connector
-
-Reference:
-J1
-
-Type:
-USB Type-C receptacle or mechanically suitable USB-C output connector
-
-Role:
-Power source
-
-V1 output:
-
-5V nominal
-Up to 1A target
-
-USB Power Delivery:
-Not implemented in V1
-
-Requirements:
-
-- correct USB-C source-role configuration
-- appropriate CC pull-up resistors
-- protected VBUS
-- suitable connector current rating
-- ESD protection
-- mechanical strain relief
-
-Quantity:
-1
-
----
-
-## 12. USB-C CC Resistors
-
-References:
-R_CC1
-R_CC2
-
-Function:
-USB-C source advertisement
-
-Use the appropriate USB-C source Rp implementation for the V1 5V source design.
-
-Exact resistor value:
-Must be selected according to the applicable USB Type-C specification and the desired advertised current.
-
-Quantity:
-2
-
-Do not use arbitrary pull resistors.
-
----
-
-## 13. USB-C ESD Protection
-
-Reference:
-D_ESD1
-
-Type:
-Low-capacitance USB/ESD protection device suitable for USB-C VBUS/CC interface.
-
-Quantity:
-1
-
-Purpose:
-
-Protect the connector/interface from electrostatic discharge.
-
-Final part:
-Select according to the PCB and connector implementation.
-
----
-
-## 14. VBUS Protection
-
-Reference:
-F1 / Q_PROTECT
-
-Possible implementation:
-
-- resettable fuse or current-limiting element
-- load-switch/current-limit IC
-- suitable reverse-current protection
-
-The exact protection architecture must be selected after confirming the USB-C source implementation.
-
-Do not place an unverified protection device in series with the 5V rail without checking voltage drop and thermal dissipation.
-
----
-
-## 15. BLE Telemetry - Optional
-
-Reference:
-U2
-
-V1 status:
-OPTIONAL
-
-Function:
-
-- receiver identification
-- temperature
-- voltage
-- current
-- estimated power
-- fault status
-
-Requirements:
-
-- BLE 5.x
-- low power
-- hardware-independent safety
-- electrically isolated from sensitive Qi switching nodes where practical
-
-The V1 receiver must operate safely without BLE.
-
----
-
-## 16. BLE Temperature / Current / Voltage Monitoring
-
-If BLE is installed:
-
-Temperature:
-NTC1 or dedicated temperature sensor
-
-Voltage:
-resistor divider or suitable ADC monitor
-
-Current:
-current-sense circuit
-
-Power:
-calculated from measured voltage and current
-
-The BLE MCU must only monitor the power system.
-
-It must not be required for:
-
-- Qi negotiation
-- over-current protection
-- thermal shutdown
-- FOD
-- short-circuit protection
-
----
-
-## 17. PCB
-
-Reference:
-PCB1
-
-Initial target:
-
-Approximately:
-60 mm x 40 mm
-
-Target thickness:
-Approximately 1.0 - 1.6 mm PCB before mechanical stack-up.
-
-Requirements:
-
-- controlled Qi receiver layout
-- short AC1/AC2 paths
-- short high-current paths
-- appropriate grounding
-- ferrite clearance
-- coil alignment
-- test points
-- USB-C mechanical support
-
-The final PCB layout must follow TI's BQ51013C reference/EVM layout guidance.
-
----
-
-## 18. Test Points
-
-Required:
-
-TP1:
-GND
-
-TP2:
-5V output
-
-TP3:
-USB-C VBUS
-
-TP4:
-AC1
-
-TP5:
-AC2
-
-TP6:
-Temperature-sense node
-
-Optional:
-
-TP7:
-Current measurement
-
-TP8:
-BLE supply
-
----
-
-## 19. Prototype Quantity
-
-Recommended first bench build:
-
-BQ51013C:
-3 units
-
-RX coil:
-3 units
-
-Ferrite:
-3 units
-
-BOOT capacitors:
-10 units
-
-CLAMP capacitors:
-10 units
-
-COMM capacitors:
-10 units
-
-Resistors:
-10 units per selected value
-
-NTC:
-5 units
-
-USB-C connectors:
-5 units
-
-ESD devices:
-5 units
-
-PCB:
-5 boards minimum
-
-Reason:
-
-The first receiver PCB should not be fabricated as a single unit.
-
-Multiple boards allow:
-
-- assembly mistakes
-- coil comparison
-- thermal testing
-- FOD tuning
-- component replacement
-- mechanical experiments
-
----
-
-## 20. Critical Design Dependencies
-
-The following must be verified before final PCB fabrication:
-
-1. Exact BQ51013C package footprint
-2. Latest TI reference schematic
-3. Latest TI EVM BOM
-4. Exact resonant capacitor values
-5. Exact output capacitor values
-6. Exact current-limit resistor
-7. NTC characteristics
-8. USB-C source-role implementation
-9. Selected coil's measured inductance
-10. Coil/ferrite/magnet mechanical stack
-11. FOD calibration
-12. PCB layout
-
----
-
-## 21. Prototype Safety
-
-Initial tests must use:
-
-- laboratory power measurement
-- electronic load
-- temperature measurement
-- current measurement
-- controlled alignment
-
-Do not perform uncontrolled short-circuit or fault testing using a phone.
-
-Stop testing if there is:
-
-- abnormal heating
-- smoke
-- component damage
-- unstable output
-- burning smell
-- unexpected current
-- damaged connector
-
----
-
-## 22. Certification Status
-
-The use of the BQ51013C does not by itself make MagCharge a Qi-certified product.
-
-The final commercial receiver must complete the applicable Wireless Power Consortium certification process before being marketed as Qi-certified.
-
----
-
-## 23. Primary References
-
-Texas Instruments BQ51013C:
-https://www.ti.com/product/BQ51013C
-
-Texas Instruments BQ51013C Evaluation Module:
-https://www.ti.com/tool/BQ51013CEVM
-
-Texas Instruments BQ51013C-Q1 Evaluation Module:
-https://www.ti.com/tool/BQ51013C-Q1EVM
-
-Texas Instruments BQ51013C datasheet:
-https://www.ti.com/lit/ds/symlink/bq51013c.pdf
-
-## 24. BOM Status
-
-This document is the preliminary component-level BOM.
-
-Parts marked "to be selected" must not be treated as final production components.
-
-The next engineering revision must replace those entries with values taken directly from the selected TI reference schematic/EVM and verified against the selected coil.
+```text
+         PHONE / CASE
+              │
+        ┌─────┴─────┐
+        │ RX COIL   │
+        │           │
+        │    NTC ●  │
+        └───────────┘
+              │
+        RECEIVER PCB
