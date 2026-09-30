@@ -1,112 +1,267 @@
-# MagCharge Universal Receiver V1 - Preliminary BOM
+# MagCharge Universal Receiver V1 — Engineering BOM
 
-## Core Receiver
+## Status
 
-### 1. Qi Receiver IC
+Engineering prototype BOM based on the Texas Instruments BQ51013C
+datasheet (SLUSFU9A, revised May 2025) and the MagCharge V1
+pin-accurate receiver netlist.
 
-Preferred starting class:
+**NOT production validated.**
+**NOT a fabrication release.**
+**NOT WPC certification.**
 
-TI BQ51013C or an approved currently available equivalent.
+Final component values require receiver characterization,
+FOD calibration, thermal testing, electrical validation and applicable
+WPC/Qi compliance work.
 
-Purpose:
-- Qi wireless power reception
-- rectification
-- regulated output
-- receiver control
-- supported protection functions
+---
 
-The final part must be selected according to availability and the manufacturer's current reference design.
+## 1. Receiver Core
 
-### 2. Receiver Coil
+| Ref | Component | Manufacturer / Part | Value / Specification | Status |
+|---|---|---|---|---|
+| U1 | Qi receiver IC | Texas Instruments BQ51013CRHLR | BQ51013C, VQFN20/RHL | Preferred V1 device |
+| L1 | Receiver coil | Würth Elektronik 760308103215 | 14.3 µH nominal, 48 × 32 mm | Starting coil |
+| SH1 | Ferrite shield | TBD | Thin flexible ferrite suitable for Qi receiver stack | TBD |
+| MR1 | Magnetic alignment ring | TBD | Thin permanent-magnet ring | Prototype/mechanical TBD |
 
-Low-profile Qi-compatible receiver coil.
+The receiver coil, ferrite, compensation network and mechanical stack
+must be validated as one magnetic system.
 
-Initial target:
-- approximately 48 x 32 mm class
-- low profile
-- ferrite backed
-- matched to the selected receiver IC
+---
 
-The exact coil must be selected together with the receiver IC/reference design.
+## 2. Resonant Network
 
-### 3. Ferrite Shield
+The final resonant values must be calculated from measured coil
+parameters in the final mechanical stack.
 
-Flexible or thin ferrite sheet positioned behind the receiver coil.
+| Ref | Function | Value | Status |
+|---|---|---:|---|
+| C_RX1 | Series resonant capacitor Cs | TBD | Requires measured Ls' |
+| C_RX2 | Parallel resonant capacitor Cd | TBD | Requires measured Ls and C_RX1 |
 
-Purpose:
-- improve magnetic coupling
-- reduce unwanted magnetic interaction with the phone
-- support receiver efficiency
+Minimum starting voltage rating:
 
-### 4. Magnetic Alignment Ring
+- 25 V minimum
+- use suitable low-loss ceramic capacitors
+- final dielectric/package selected during validation
 
-Thin permanent-magnet ring.
+### Required characterization
 
-Purpose:
-- align the receiver with the MagCharge transmitter
-- maintain the correct coil position
+Measure:
 
-The magnets are for alignment only. They do not transfer charging power.
+- Ls'
+- Ls
+- DC resistance
+- Q factor
+- resonance
+- receiver efficiency
 
-### 5. Temperature Sensor
+For Ls':
 
-NTC thermistor or the exact temperature-sensing component specified by the selected receiver IC/reference design.
+- WPC v1.3 receiver coil test fixture
+- 50 × 50 × 1 mm TDK PC44 ferrite primary shield
+- dZ = 3.4 mm
+- 1 Vrms
+- 100 kHz
 
-Purpose:
-- thermal monitoring
-- charging protection
+Calculate:
 
-### 6. USB-C Connector
+C1 = 1 / ((2*pi*fS)^2 * Ls')
 
-USB-C male connector configured as a 5V power source.
+where fS = 100 kHz (+5% / -10%).
 
-V1 target:
-- 5V
-- up to 1A target
-- USB Power Delivery not implemented
+Then:
 
-### 7. Protection Components
+C2 = 1 / ((2*pi*fD)^2 * Ls - 1/C1)
 
-Use the protection components specified by the selected receiver IC reference design.
+where fD = 1 MHz (+/-10%).
 
-Potential functions:
+The final values must not be copied from the TI 11-µH example.
 
-- over-voltage protection
-- over-current protection
+---
+
+## 3. BQ51013C Support Network
+
+| Ref | Function | Value | Voltage / Type | Status |
+|---|---|---:|---|---|
+| C_BOOT1 | BOOT1 capacitor | 10 nF | 25 V minimum | TI starting value |
+| C_BOOT2 | BOOT2 capacitor | 10 nF | 25 V minimum | TI starting value |
+| C_COMM1 | COMM1 capacitor | 22 nF | 25 V minimum | TI starting value |
+| C_COMM2 | COMM2 capacitor | 22 nF | 25 V minimum | TI starting value |
+| C_CLAMP1 | AC1 clamp capacitor | 0.47 µF | 25 V minimum | TI starting value |
+| C_CLAMP2 | AC2 clamp capacitor | 0.47 µF | 25 V minimum | TI starting value |
+
+---
+
+## 4. RECT and OUT Filtering
+
+| Ref | Function | Value | Voltage | Status |
+|---|---|---:|---:|---|
+| C_RECT1 | RECT reservoir | 10 µF | 16 V minimum | Reference starting value |
+| C_RECT2 | RECT reservoir | 10 µF | 16 V minimum | Reference starting value |
+| C_RECT3 | RECT bypass | 0.1 µF | 16 V minimum | Reference starting value |
+| C_OUT1 | OUT reservoir | 10 µF | 10 V minimum | Prototype starting value |
+| C_OUT2 | OUT bypass | 0.1 µF | 10 V minimum | Prototype starting value |
+
+Final voltage ratings must include appropriate derating.
+
+---
+
+## 5. FOD and Current Limit
+
+| Ref | Function | Value | Status |
+|---|---|---:|---|
+| R_ILIM | ILIM resistor R1 | 66 Ω | Starting/reference |
+| R_FOD | RFOD | 196 Ω | Starting/reference |
+| R_OS | FOD calibration resistor ROS | 20 kΩ | Starting/reference |
+
+The ILIM resistance is:
+
+RILIM = R_ILIM + R_FOD
+
+Therefore:
+
+RILIM = 66 Ω + 196 Ω = 262 Ω
+
+Reference IMAX:
+
+1 A
+
+The TI reference arrangement gives a nominal 1.2 A hardware current
+limit, allowing temporary current surges.
+
+Final values require board validation.
+
+### FOD calibration
+
+RFOD and ROS are calibration components.
+
+Provide suitable resistor positions so that final calibrated values
+can be fitted after receiver characterization.
+
+ROS is separate from the ILIM resistance path.
+
+---
+
+## 6. Thermal Sensing
+
+| Ref | Component | Value | Status |
+|---|---|---:|---|
+| NTC1 | Production NTC | TBD | Must be characterized |
+| R_TS_TEST | Prototype TS termination | 10 kΩ | Prototype only |
+
+The 10-kΩ resistor is a prototype/test termination and must not be
+treated as the final production thermal sensor.
+
+NTC placement must monitor the thermally critical receiver area.
+
+---
+
+## 7. CHG Status
+
+| Ref | Function | Value | Status |
+|---|---|---:|---|
+| TP_CHG | CHG_STATUS test point | — | Recommended |
+
+The BQ51013C CHG output is open-drain.
+
+An LED indicator may be added after the core receiver electrical
+design is validated.
+
+---
+
+## 8. USB-C Output
+
+### Architecture
+
+V1 uses a **USB-C male plug / short flex-tail** intended to connect
+directly to the Android phone.
+
+| Ref | Component | Specification | Status |
+|---|---|---|---|
+| J1 | USB-C male plug | 5 V source, up to 1 A target | Prototype architecture |
+| ESD1 | USB-C ESD protection | Suitable USB ESD device | TBD |
+| FUSE1 | Output protection | Current/thermal protection as required | TBD |
+
+USB Power Delivery is not implemented in V1.
+
+The USB-C output must provide:
+
+- protected 5 V
+- controlled output current
 - short-circuit protection
-- thermal protection
-- foreign-object detection where supported
+- reverse-current protection where required
+- ESD protection
+- mechanical strain relief
 
-### 8. PCB
+A known-good USB-C source-role breakout may be used during prototype
+validation before integrating the final flex-tail connector.
 
-Prototype PCB or flexible PCB.
+---
 
-Target:
+## 9. Ground and Thermal
 
-- compact
-- low profile
-- receiver coil area
-- receiver IC area
-- protection/regulation area
-- USB-C connection
-- test points
+U1 pins 1 and 20 and the exposed pad connect to PGND.
 
-Follow the exact receiver IC reference layout.
+The exposed pad requires a low-impedance thermal connection to PGND.
 
-## Mechanical Materials
+PGND includes:
 
-- electrical insulation film
-- protective outer film
-- thin adhesive layer
-- connector strain relief
-- optional protective enclosure
+- U1 ground pins
+- U1 exposed pad
+- RECT capacitors
+- OUT capacitors
+- ILIM network
+- TS/NTC network
+- USB-C ground
 
-## Prototype Laboratory Equipment
+---
 
-The first prototype should be tested with:
+## 10. Test Points
+
+Recommended prototype test points:
+
+| Ref | Net |
+|---|---|
+| TP_AC1 | AC1 |
+| TP_AC2 | AC2 |
+| TP_RECT | RECT |
+| TP_OUT | +5V_RX |
+| TP_PGND | PGND |
+| TP_CHG | CHG_STATUS |
+| TP_TS | TS_CTRL |
+| TP_FOD | FOD |
+| TP_ILIM | ILIM |
+
+Test points must be arranged so that probing does not compromise
+the magnetic stack or safety insulation.
+
+---
+
+## 11. Mechanical Materials
+
+| Item | Requirement |
+|---|---|
+| Ferrite | Thin flexible receiver ferrite |
+| Insulation | Electrical insulation between coil/PCB/mechanics |
+| Adhesive | Thin electrically safe adhesive |
+| Alignment ring | Magnetic alignment only |
+| Backing | Protective mechanical layer |
+| Flex strain relief | Required around USB-C tail |
+| Enclosure/film | Optional prototype protection |
+
+Magnetic material must not interfere with the validated Qi receiver
+magnetic stack.
+
+---
+
+## 12. Prototype Laboratory Equipment
+
+Required or recommended:
 
 - known-good Qi transmitter
-- MagCharge puck
+- MagCharge transmitter/puck
 - electronic load
 - USB power meter
 - multimeter
@@ -115,15 +270,14 @@ The first prototype should be tested with:
 - USB-C breakout
 - current/voltage measurement equipment
 
-## Component Selection Rule
+Initial electrical testing must use an electronic load before
+connecting a phone.
 
-Do not purchase large quantities before the receiver IC and coil combination has been validated.
+---
 
-The receiver IC, coil and compensation network must be treated as one validated power-transfer system.
+## 13. Production BOM Requirements
 
-## Production BOM
-
-The final production BOM must contain:
+Before production release, every component must have:
 
 - manufacturer
 - manufacturer part number
@@ -133,6 +287,30 @@ The final production BOM must contain:
 - supplier
 - availability
 - lifecycle status
+- datasheet
 - reference-design source
+- validated electrical rating
+- validated thermal rating
 
-This document is a preliminary engineering BOM and not a final production purchasing list.
+---
+
+## 14. Engineering Gate
+
+The BOM is not production-ready until:
+
+1. The exact BQ51013C implementation is reviewed against the current
+   TI datasheet.
+2. The selected coil is characterized.
+3. Ls' and Ls are measured.
+4. C_RX1 and C_RX2 are calculated and experimentally tuned.
+5. Q > 77 is verified.
+6. FOD is calibrated.
+7. Thermal behavior is validated.
+8. 5 V / 1 A operation is validated with an electronic load.
+9. USB-C source behavior is validated.
+10. Short-circuit and protection behavior are validated.
+11. The PCB layout follows the receiver IC manufacturer's guidance.
+12. Applicable Qi/WPC compliance requirements are addressed.
+
+This BOM is an engineering reference and must not be interpreted as
+a manufacturing release.
