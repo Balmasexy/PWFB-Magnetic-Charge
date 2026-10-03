@@ -12673,7 +12673,7 @@
                                 )
                         )
                 )
-                (property "Value" "TBD"
+                (property "Value" "MF-NSMF150"
                         (at 270 105.08 0)
                         (effects
                                 (font
@@ -12681,7 +12681,7 @@
                                 )
                         )
                 )
-                (property "Footprint" ""
+                (property "Footprint" "MagCharge:MF-NSMF150"
                         (at 270 100 0)
                         (effects
                                 (font
@@ -12690,7 +12690,7 @@
                                 (hide yes)
                         )
                 )
-                (property "Datasheet" ""
+                (property "Datasheet" "https://www.bourns.com/docs/product-datasheets/mf-nsmf.pdf"
                         (at 270 100 0)
                         (effects
                                 (font
@@ -12699,7 +12699,7 @@
                                 (hide yes)
                         )
                 )
-                (property "Description" ""
+                (property "Description" "Bourns MF-NSMF150 resettable PPTC fuse; 1.50 A Ihold; 3.00 A Itrip; 6 V max; 0.13 ohm max; 1206"
                         (at 270 100 0)
                         (effects
                                 (font

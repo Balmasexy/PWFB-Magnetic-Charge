@@ -1,0 +1,10 @@
+(fp_lib_table
+  (version 7)
+  (lib
+    (name "MagCharge")
+    (type "KiCad")
+    (uri "${KIPRJMOD}/footprints/MagCharge.pretty")
+    (options "")
+    (descr "MagCharge project-local footprints")
+  )
+)
