@@ -2,3 +2,9 @@
 .gradle/
 hardware/kicad/MAGCHARGE_RX_V1/reference/*
 !hardware/kicad/MAGCHARGE_RX_V1/reference/*.md
+
+# MagCharge KiCad generated/backup artifacts
+hardware/kicad/MAGCHARGE_RX_V1/native_build/*.kicad_sch
+hardware/kicad/MAGCHARGE_RX_V1/native_build/*.kicad_sym.bak
+hardware/kicad/MAGCHARGE_RX_V1/native_build/*.kicad_sym.corrected
+hardware/kicad/MAGCHARGE_RX_V1/native_build/__pycache__/
