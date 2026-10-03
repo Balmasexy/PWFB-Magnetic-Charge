@@ -12741,7 +12741,7 @@
                                 )
                         )
                 )
-                (property "Value" "TBD"
+                (property "Value" "ESDA7P60-1U1M"
                         (at 270 130.08 0)
                         (effects
                                 (font
@@ -12749,7 +12749,7 @@
                                 )
                         )
                 )
-                (property "Footprint" ""
+                (property "Footprint" "MagCharge:ESDA7P60-1U1M"
                         (at 270 125 0)
                         (effects
                                 (font
@@ -12758,7 +12758,7 @@
                                 (hide yes)
                         )
                 )
-                (property "Datasheet" ""
+                (property "Datasheet" "https://www.st.com/resource/en/datasheet/esda7p60-1u1m.pdf"
                         (at 270 125 0)
                         (effects
                                 (font
@@ -12767,7 +12767,7 @@
                                 (hide yes)
                         )
                 )
-                (property "Description" ""
+                (property "Description" "ST ESDA7P60-1U1M 5 V TVS, QFN-2L; USB-C VBUS ESD protection"
                         (at 270 125 0)
                         (effects
                                 (font
