@@ -1,0 +1,8 @@
+REF	DESIGNATOR	VALUE	PART	PACKAGE	STATUS
+U_USB_PROTECT	BD2242G	BD2242G-GTR	ROHM BD2242G-GTR	SSOP6	Selected candidate
+R_USB_ILIM	R_USB_ILIM	20.57k 1%	Precision resistor	TBD	Required
+R_USB_CC1	R_USB_CC1	56k 1%	USB-C Rp resistor	TBD	Required
+R_USB_CC2	R_USB_CC2	56k 1%	USB-C Rp resistor	TBD	Required
+FUSE1	FUSE1	TBD	USB output fuse	TBD	Selection pending
+ESD1	ESD1	TBD	USB VBUS ESD protector	TBD	Selection pending
+J1	J1	USB-C Power Only	USB-C source connector	TBD	Footprint pending
